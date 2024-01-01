@@ -4,12 +4,12 @@ import CreateFeed from '../components/CreateFeed'
 
 const Create = () => {
   return (
-    <div className='inline-flex w-full items-center'>
+    <div className='flex'>
       <div className="w-56 h-screen">
          <Sidebar/>
       </div>
     
-    <div className="h-screen "style={{ width: 'calc(100vw - 224px)' }}>
+    <div className="h-screen w-full " >
        <CreateFeed/>
     </div>
    
