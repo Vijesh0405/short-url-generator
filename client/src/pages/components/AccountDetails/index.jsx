@@ -1,12 +1,22 @@
 // AccountDetails.jsx
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 
 const AccountDetails = () => {
     const [user,setUser] = useState({})
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [isLogout,seIsLogout] = useState(!Cookies.get('accessToken'))
+    const handleLogOut = async ()=>{
+      Cookies.remove('accessToken')
+      Cookies.remove("email")
+      Cookies.remove("username")
+      Cookies.remove("fullName")
+      window.location.href = '/user/login'
+    }
     useEffect(()=>{
         (async () => {  
             try {
@@ -19,11 +29,13 @@ const AccountDetails = () => {
                     },
                   };
                 const response = await axios.get(`http://localhost:5000/api/v1/users/get-current-user`,config)
-                console.log(response)
+                // console.log(response)
                 const user = response?.data?.data
                 if(response.data.success)
                 {
-                   setUser(user)
+                   Cookies.set("email",user.email)
+                   Cookies.set("fullName",user.fullName)
+                   Cookies.set("username",user.username)
                 }
             else{
                 <h1 className='text-red-700'>
@@ -33,13 +45,15 @@ const AccountDetails = () => {
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
-    
-    
+
         })()
     },[])
   return (
     <div className="flex flex-col items-center pt-[10%] px-6 bg-gray-200 h-screen w-full">
-      <div className="mb-4">
+    {
+      !isLogout && (
+      <>
+       <div className="mb-4">
         <img
           src="https://via.placeholder.com/150"
           alt="User Avatar"
@@ -49,20 +63,32 @@ const AccountDetails = () => {
       <div className="flex flex-col items-start">
       <div className="flex justify-center items-center gap-2 mb-4">
         <label className="text-lg font-semibold">Full Name:</label>
-        <p className="text-gray-600">{user.fullName}</p>
+        <p className="text-gray-600">{Cookies.get("fullName")}</p>
       </div>
       <div className="flex justify-center items-center gap-2 mb-4">
         <label className="text-lg font-semibold">Username:</label>
-        <p className="text-gray-600">{user.username}</p>
+        <p className="text-gray-600">{Cookies.get("username")}</p>
       </div>
       <div className="flex justify-center items-center gap-2 mb-4">
         <label className="text-lg font-semibold">Email:</label>
-        <p className="text-gray-600">{user.email}</p>
+        <p className="text-gray-600">{Cookies.get("email")}</p>
       </div>
       </div>
-      <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">
+      <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300" onClick={handleLogOut}>
         Logout
       </button>
+      </>
+      )
+    }
+    {
+      isLogout && (
+       
+        <Link to="/user/login" className="mt-56 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">
+          Login
+        </Link>
+       
+      )
+    }
     </div>
   );
 };

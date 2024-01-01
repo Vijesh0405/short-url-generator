@@ -19,7 +19,7 @@ const Sidebar = () => {
             <Link to="/user/account">Account</Link>
           </li>
           <li className="p-2 hover:bg-gray-700">
-            <Link to="/user/settings">Settings</Link>
+            <Link to="/user/account/settings">Settings</Link>
           </li>
           <li className="p-2 hover:bg-gray-700">
             <Link to="/url/create">Create</Link>

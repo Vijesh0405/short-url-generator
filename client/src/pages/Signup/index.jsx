@@ -65,7 +65,7 @@ const SignUpForm = () => {
         <h2 className="text-2xl font-semibold mb-6">Sign Up</h2>
         {success && (
           <div className="mb-4 text-green-500">
-            Signup successful! You can now <Link to="/">login</Link>.
+            Signup successful! You can now <Link to="/user/login">login</Link>.
           </div>
         )}
         {error && <div className="mb-4 text-red-500">{error}</div>}
@@ -144,7 +144,7 @@ const SignUpForm = () => {
         </button>
         <p className="mt-4 text-gray-600">
         Already have an account?{' '}
-        <Link to="/login" className="text-blue-500">
+        <Link to="/user/login" className="text-blue-500">
           Log in here
         </Link>
       </p>

@@ -5,4 +5,6 @@ import LoginForm from "./Login";
 import SignUpForm from "./Signup";
 import Sidebar from "./components/Sidebar";
 import Logo from "./components/Logo";
-export {Create,CreateFeed,HomePage,LoginForm,SignUpForm,Sidebar,Logo}
+import SettingsPage from "./components/SettingPage";
+import Setting from "./Setting";
+export {Create,CreateFeed,HomePage,LoginForm,SignUpForm,Sidebar,Logo,SettingsPage,Setting}

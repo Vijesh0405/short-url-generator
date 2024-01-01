@@ -272,7 +272,10 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 
     const { fullName, email } = req.body
     console.log(req.body)
-
+    const existingUser = await User.findOne({email})
+    if(existingUser){
+        throw new ApiError(400,'email is already taken')
+    }
     const user = await User.findByIdAndUpdate(
         req.user?._id,
         {

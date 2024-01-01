@@ -13,7 +13,6 @@ const LoginForm = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
   const navigate = useNavigate()
 
   const handleInputChange = (e) => {
@@ -59,11 +58,7 @@ const LoginForm = () => {
     <div className="flex items-center justify-center h-screen">
       <form className="w-full max-w-md bg-white p-8 rounded shadow-md">
         <h2 className="text-2xl font-semibold mb-6">Login</h2>
-        {success && (
-          <div className="mb-4 text-green-500">
-            Signup successful! You can now <Link to="/">login</Link>.
-          </div>
-        )}
+       
         {error && <div className="mb-4 text-red-500">{error}</div>}
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="usernameOrEmail">
@@ -111,7 +106,7 @@ const LoginForm = () => {
         </button>
         <p className="mt-4 text-gray-600">
         Don't have an account?{' '}
-        <Link to="/signup" className="text-blue-500">
+        <Link to="/user/signup" className="text-blue-500">
           Sign up here
         </Link>
       </p>
