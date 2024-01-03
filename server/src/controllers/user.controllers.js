@@ -356,11 +356,37 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     }
 })
 
+//delete account 
+const deleteUser = asyncHandler(async (req,res)=>{
+    try {
+      await User.findByIdAndDelete(req.user?._id)
+
+      res.status(200)
+      .json(
+        new ApiResponse(
+            200,
+            {},
+            "Account deleted Successfully"
+        )
+      )
+       
+    } catch (error) {
+        res.status(500)
+        .json(
+            new ApiResponse(
+                500,
+                {},
+                "Something went wrong during deleting account"
+            )
+        )
+    }
+})
+
 export {registerUser,
     loginUser,logoutUser,
     changeCurrentPassword,
     updateUserAvatar,updateAccountDetails,
     getCurrentUser,refreshAccessToken,
-    getUser
+    getUser,deleteUser
 
 }

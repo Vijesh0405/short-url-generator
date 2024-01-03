@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   return (
-    <div className=" h-screen flex flex-col bg-gray-800 text-white">
+    <div className=" min-h-screen flex flex-col bg-gray-800 text-white">
       {/* Sidebar Header */}
       <div className="flex items-center justify-center p-4">
-        <span className="text-2xl font-bold">Your Logo</span>
+        <span className="text-2xl font-bold">ShortUrls</span>
       </div>
 
       {/* Sidebar Links */}
@@ -15,9 +15,9 @@ const Sidebar = () => {
           <li className="p-2 hover:bg-gray-700">
             <Link to="/">Home</Link>
           </li>
-          <li className="p-2 hover:bg-gray-700">
+          {/* <li className="p-2 hover:bg-gray-700">
             <Link to="/user/account">Account</Link>
-          </li>
+          </li> */}
           <li className="p-2 hover:bg-gray-700">
             <Link to="/user/account/settings">Settings</Link>
           </li>

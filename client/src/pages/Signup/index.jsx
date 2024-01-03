@@ -101,9 +101,9 @@ const SignUpForm = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
             Password
           </label>
-          <div className="flex justify-between border rounded px-3">
+          <div className="flex justify-between border rounded pe-3">
           <input
-            className="w-full  py-2 text-gray-700 outline-none"
+            className="w-full px-2 py-2 text-gray-700 outline-none"
             type={showPassword ? 'text' : 'password'}
             id="password"
             name="password"
@@ -114,7 +114,7 @@ const SignUpForm = () => {
           <button
             type="button"
             onClick={handleTogglePassword}
-            className="w-5 h-5 top-0 right-0 mt-2 mr-2 text-gray-500 cursor-pointer"
+            className="w-5 h-5 top-0 right-0 mt-2 ml-2 text-gray-500 cursor-pointer"
           >
             {showPassword ? '🙈' : '👁️'}
           </button>

@@ -16,11 +16,7 @@ const Redirector = () => {
                 console.log(redirectUrl)
                 window.location.href = redirectUrl
             }
-        else{
-            <h1>
-                Error
-            </h1>
-        }
+       
         } catch (error) {
             console.error('Error fetching data:', error);
         }

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 
 const AccountDetails = () => {
-    const [user,setUser] = useState({})
+    const [user,setUser] = useState(null)
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isLogout,seIsLogout] = useState(!Cookies.get('accessToken'))
@@ -17,6 +17,7 @@ const AccountDetails = () => {
       Cookies.remove("fullName")
       window.location.href = '/user/login'
     }
+    
     useEffect(()=>{
         (async () => {  
             try {
@@ -36,12 +37,8 @@ const AccountDetails = () => {
                    Cookies.set("email",user.email)
                    Cookies.set("fullName",user.fullName)
                    Cookies.set("username",user.username)
+                   setUser(user)
                 }
-            else{
-                <h1 className='text-red-700'>
-                    Error
-                </h1>
-            }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

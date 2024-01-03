@@ -1,8 +1,10 @@
 // SettingsPage.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+
 const SettingsPage = () => {
+
   const [isEditingAccount, setIsEditingAccount] = useState(false);
   const [accountDetails, setAccountDetails] = useState({
     email: `${Cookies.get("email")}`,
@@ -12,16 +14,55 @@ const SettingsPage = () => {
   const [accsuccess, setAccSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [accerror, setAccError] = useState(null);
-
   const [passwordForm, setPasswordForm] = useState({
     oldPassword: '',
     newPassword: '',
   });
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  useEffect(() => {
+    if (!Cookies.get('accessToken')) {
+      window.location.href = "/user/login"
+    }
+  }, [])
 
   const handleEditAccount = () => {
     setIsEditingAccount(!isEditingAccount);
   };
 
+  const handleDeleteAccount = () => {
+    setIsDeletingAccount(true)
+  }
+  const handleConfirmDeleteAccount = async (isConfirmed) => {
+    
+    setIsDeletingAccount(false)
+    if (!isConfirmed) {
+      return
+    }
+    try {
+      const config = {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json', // Specify the content type
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, // Include any additional headers, e.g., Authorization
+          // Add other headers as needed
+        },
+      };
+      const response  = await axios.delete("http://localhost:5000/api/v1/users/account/delete",config)
+      console.log(response)
+      if(response.data.success){
+        Cookies.remove("accessToken")
+        Cookies.remove('refreshToken')
+        Cookies.remove('username')
+        Cookies.remove('email')
+        Cookies.remove('fullName')
+        window.location.href = '/user/login'
+      }
+    } catch (error) {
+      console.log("can not delete something went wrong :" ,error)
+    }
+    
+
+  }
   const handleConfirmAccount = async () => {
     // Implement logic to update account details
     const config = {
@@ -35,12 +76,12 @@ const SettingsPage = () => {
     try {
       const response = await axios.patch('http://localhost:5000/api/v1/users/change-account-details', accountDetails, config)
       console.log(response)
-      
+
       if (response.data.success) {
         setAccSuccess(true)
         //update Cookies
-        Cookies.set("email",accountDetails.email)
-        Cookies.set('fullName',accountDetails.fullName)
+        Cookies.set("email", accountDetails.email)
+        Cookies.set('fullName', accountDetails.fullName)
         console.log('Account details updated:', response.data?.data);
       }
     } catch (error) {
@@ -50,10 +91,10 @@ const SettingsPage = () => {
         fullName: Cookies.get("fullName"),
       });
     }
-   finally{
-    setIsEditingAccount(false);
-   }
-    
+    finally {
+      setIsEditingAccount(false);
+    }
+
   };
 
   const handlePasswordReset = async () => {
@@ -99,7 +140,7 @@ const SettingsPage = () => {
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
-    
+
     setPasswordForm({
       ...passwordForm,
       [name]: value,
@@ -201,6 +242,42 @@ const SettingsPage = () => {
           Reset Password
         </button>
       </div>
+
+      {/* delete account section */}
+      <div className='mb-2'>
+        <button
+          onClick={handleDeleteAccount}
+          className={`bg-red-500 text-white px-4 py-2 mt-4 rounded-md hover:bg-blue-600 transition duration-300 mb-2`}
+        >
+          Delete Account
+        </button>
+
+      </div>
+      <div className='mb-2'>
+        {
+          isDeletingAccount && (
+            <>
+              <div className='flex gap-3 items-center'>
+                <p className='text-red-500 text-sm'>Account will be permanently deleted ,are you sure to delete</p>
+                <div className='flex justify-center p-1 items-center bg-red-400 hover:bg-red-600'
+                  onClick={() => {    
+                    handleConfirmDeleteAccount(true)
+                  }
+                  }>
+                  ✔️
+                </div>
+                <div className='flex justify-center p-1 items-center bg-zinc-400 hover:bg-zinc-600'
+                  onClick={() => {
+                    handleConfirmDeleteAccount(false)
+                  }}>
+                  ❌
+                </div>
+              </div>
+            </>
+          )
+        }
+      </div>
+
     </div>
   );
 };

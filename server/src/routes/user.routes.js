@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { changeCurrentPassword, getCurrentUser, getUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateUserAvatar } from "../controllers/user.controllers.js";
+import { changeCurrentPassword, deleteUser, getCurrentUser, getUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateUserAvatar } from "../controllers/user.controllers.js";
 import { upload } from "../middleware/multer.middleware.js"
 import { verifyJwt } from "../middleware/auth.middleware.js";
 const router = Router()
@@ -51,7 +51,11 @@ router.route('/change-avatar')
         upload.single("avatar"),
         updateUserAvatar
     )
-
+router.route('/account/delete')
+.delete(
+    verifyJwt,
+    deleteUser
+)
 
 
 export default router
