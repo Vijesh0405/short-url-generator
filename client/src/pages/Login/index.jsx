@@ -1,7 +1,7 @@
 // LoginForm.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Cookie from 'js-cookie'
+
 import axios from 'axios';
 const LoginForm = () => {
   const [loginData, setLoginData] = useState({
@@ -33,14 +33,14 @@ const LoginForm = () => {
     setError(null)
     setLoading(true)
     try {
-      const response = await axios.post("http://localhost:5000/api/v1/users/login", loginData,)
+      const response = await axios.post("http://localhost:5000/api/v1/users/login", loginData,{withCredentials:true})
       console.log(response)
-      const { user, refreshToken, accessToken } = await response.data.data
+      const { user, refreshToken, accessToken } = response.data.data
       console.log(refreshToken, " ", accessToken, " ", user)
       localStorage.setItem('refreshToken', refreshToken)
       localStorage.setItem('accessToken', accessToken)
-      Cookie.set("refreshToken", refreshToken)
-      Cookie.set("accessToken", accessToken)
+      // Cookie.set("refreshToken", refreshToken)
+      // Cookie.set("accessToken", accessToken)
       navigate('/')
       setSuccess(true)
     } catch (error) {

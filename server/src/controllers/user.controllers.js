@@ -115,13 +115,14 @@ const loginUser = asyncHandler(async (req,res)=>{
     // in options ke karan hum cookies ko frontend se edit nahi kr sakte kevel server se edit kr sakte hai
     const options = {
         httpOnly: true,
+        sameSite:'None',
         secure: true
     }
 
     return res
         .status(200)
-        .cookie("accessToken", accessToken)
-        .cookie("refreshToken", refreshToken)
+        .cookie("accessToken", accessToken,options)
+        .cookie("refreshToken", refreshToken,options)
         .json(
             new ApiResponse(
                 200,
@@ -157,6 +158,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     //cookie options
     const options = {
         httpOnly: true,
+        sameSite:'None',
         secure: true
     }
     return res
@@ -168,6 +170,22 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 })
 
+//getCookie
+const getCookie = asyncHandler(async (req,res)=>{
+    const {accessToken,refreshToken} = req.cookies
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            {
+                accessToken,
+                refreshToken
+            },
+            "Token fetched Successfully"
+        )
+    )
+})
 
 //refresh AccessToken
 const refreshAccessToken = asyncHandler(async (req, res) => {
@@ -361,7 +379,14 @@ const deleteUser = asyncHandler(async (req,res)=>{
     try {
       await User.findByIdAndDelete(req.user?._id)
 
+      const options = {
+        httpOnly: true,
+        sameSite:'None',
+        secure: true
+    }
       res.status(200)
+      .clearCookie('refreshToken',options)
+      .clearCookie('accessToken',options)
       .json(
         new ApiResponse(
             200,
@@ -387,6 +412,6 @@ export {registerUser,
     changeCurrentPassword,
     updateUserAvatar,updateAccountDetails,
     getCurrentUser,refreshAccessToken,
-    getUser,deleteUser
+    getUser,deleteUser,getCookie
 
 }

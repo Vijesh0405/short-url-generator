@@ -1,14 +1,14 @@
 // SettingsPage.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Cookies from 'js-cookie';
+import { getCookie } from '../../utils';
 
 const SettingsPage = () => {
 
   const [isEditingAccount, setIsEditingAccount] = useState(false);
   const [accountDetails, setAccountDetails] = useState({
-    email: `${Cookies.get("email")}`,
-    fullName: `${Cookies.get("fullName")}`
+    email: `${localStorage.getItem("email")}`,
+    fullName: `${localStorage.getItem("fullName")}`
   });
   const [success, setSuccess] = useState(false);
   const [accsuccess, setAccSuccess] = useState(false);
@@ -20,7 +20,7 @@ const SettingsPage = () => {
   });
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
   useEffect(() => {
-    if (!Cookies.get('accessToken')) {
+    if (!getCookie('accessToken')) {
       window.location.href = "/user/login"
     }
   }, [])
@@ -50,11 +50,6 @@ const SettingsPage = () => {
       const response  = await axios.delete("http://localhost:5000/api/v1/users/account/delete",config)
       console.log(response)
       if(response.data.success){
-        Cookies.remove("accessToken")
-        Cookies.remove('refreshToken')
-        Cookies.remove('username')
-        Cookies.remove('email')
-        Cookies.remove('fullName')
         window.location.href = '/user/login'
       }
     } catch (error) {
@@ -80,15 +75,15 @@ const SettingsPage = () => {
       if (response.data.success) {
         setAccSuccess(true)
         //update Cookies
-        Cookies.set("email", accountDetails.email)
-        Cookies.set('fullName', accountDetails.fullName)
+        localStorage.setItem("email", accountDetails.email)
+        localStorage.setItem('fullName', accountDetails.fullName)
         console.log('Account details updated:', response.data?.data);
       }
     } catch (error) {
       setAccError("email is already taken")
       setAccountDetails({
-        email: Cookies.get("email"),
-        fullName: Cookies.get("fullName"),
+        email: localStorage.getItem("email"),
+        fullName: localStorage.getItem("fullName"),
       });
     }
     finally {
