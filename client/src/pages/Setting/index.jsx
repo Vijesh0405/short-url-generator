@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SettingsPage from '../components/SettingPage'
 import Sidebar from '../components/Sidebar'
+import { getCookie } from '../utils'
 const Setting = () => {
+  useEffect(() => {
+    (async ()=>{
+      if (!await getCookie('accessToken')) {
+        window.location.href = "/user/login"
+      }
+    })()
+  }, [])
   return (
     <div>
       <div className='flex min-h-screen'>

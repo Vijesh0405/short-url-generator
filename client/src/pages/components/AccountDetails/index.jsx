@@ -26,8 +26,10 @@ const AccountDetails = () => {
         const response  = await axios.post('http://localhost:5000/api/v1/users/logout',{},config)
         if(response.data.success){
           console.log(response.data.message)
-          window.location.href = '/user/login'
           setIsLogIn(false)
+          localStorage.clear()
+          window.location.href = '/user/login'
+          
         }
       } catch (error) {
         console.log("error occured : ",error)

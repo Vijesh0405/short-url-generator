@@ -1,7 +1,6 @@
 // SettingsPage.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { getCookie } from '../../utils';
 
 const SettingsPage = () => {
 
@@ -19,11 +18,13 @@ const SettingsPage = () => {
     newPassword: '',
   });
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
-  useEffect(() => {
-    if (!getCookie('accessToken')) {
-      window.location.href = "/user/login"
-    }
-  }, [])
+  // useEffect(() => {
+  //   (async ()=>{
+  //     if (!await getCookie('accessToken')) {
+  //       window.location.href = "/user/login"
+  //     }
+  //   })()
+  // }, [])
 
   const handleEditAccount = () => {
     setIsEditingAccount(!isEditingAccount);
