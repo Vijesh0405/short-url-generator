@@ -1,2 +1,2 @@
 this a short url app
-[![Alt text for the video](samplevideo.mp4)](samplevideo.mp4)
+[Sample Video-Click here](samplevideo.mp4](https://github.com/Vijesh0405/short-url-generator/blob/main/samplevideo.mp4))
